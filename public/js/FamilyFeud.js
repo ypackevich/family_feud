@@ -74,9 +74,7 @@ var app = {
         var qText = app.questions[eNum];
         var qAnswr = app.allData[qText];
 
-        var qNum = qAnswr.length;
-        qNum = (qNum < 8) ? 8 : qNum;
-        qNum = (qNum % 2 != 0) ? qNum + 1 : qNum;
+        var qNum = 6;
 
         var boardScore = app.board.find("#boardScore");
         var question = app.board.find(".question");
@@ -90,8 +88,6 @@ var app = {
         var wrong = app.board.find(".wrongBoard")
         $(wrong).find("img").hide()
         $(wrong).hide()
-
-        qNum = 10
 
         for (var i = 0; i < qNum; i++) {
             var aLI;

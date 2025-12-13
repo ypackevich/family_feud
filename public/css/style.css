@@ -1,155 +1,160 @@
-
 html {
   height: 100%;
   width: 100%;
 }
+
 body {
-  background: #a7cfdf;
-  background: -moz-linear-gradient(top, #a7cfdf 0%, #23538a 100%);
-  background: -webkit-linear-gradient(top, #a7cfdf 0%, #23538a 100%);
-  background: linear-gradient(to bottom, #a7cfdf 0%, #23538a 100%);
-  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#a7cfdf', endColorstr='#23538a', GradientType=0);
+  background: radial-gradient(circle at 50% 20%, #1b324b 0%, #0f1c2b 45%, #05080e 100%);
   padding: 0;
   margin: 0;
   display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.gameBoard .cardHolder>div,
-.gameBoard .LBG {
-  background: #cedbe9;
-  background: -moz-linear-gradient(top, #cedbe9 0%, #aac5de 17%, #6199c7 50%, #3a84c3 51%, #419ad6 59%, #4bb8f0 71%, #3a8bc2 84%, #26558b 100%);
-  background: -webkit-linear-gradient(top, #cedbe9 0%, #aac5de 17%, #6199c7 50%, #3a84c3 51%, #419ad6 59%, #4bb8f0 71%, #3a8bc2 84%, #26558b 100%);
-  background: linear-gradient(to bottom, #cedbe9 0%, #aac5de 17%, #6199c7 50%, #3a84c3 51%, #419ad6 59%, #4bb8f0 71%, #3a8bc2 84%, #26558b 100%);
-  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#cedbe9', endColorstr='#26558b', GradientType=0);
-}
-.gameBoard .cardHolder>div:empty,
-.gameBoard .score,
-.gameBoard .button,
-.gameBoard .DBG {
-  background: #7db9e8;
-  background: -moz-linear-gradient(top, #7db9e8 0%, #207cca 49%, #2989d8 50%, #1e5799 100%);
-  background: -webkit-linear-gradient(top, #7db9e8 0%, #207cca 49%, #2989d8 50%, #1e5799 100%);
-  background: linear-gradient(to bottom, #7db9e8 0%, #207cca 49%, #2989d8 50%, #1e5799 100%);
-  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#7db9e8', endColorstr='#1e5799', GradientType=0);
+  align-items: center;
+  justify-content: center;
+  color: #f5f5f5;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
 .gameBoard {
-  width: 100%;
-  height: 95vh;
-  gap: 10px;
+  width: 95vw;
+  max-width: 1300px;
+  height: 90vh;
+  gap: 12px;
   margin: auto;
   display: grid;
-  grid-template-areas: 
-    ".        scoreM  .       "
-    "scoreT1  main    scoreT2 "
-    ".        host    .       ";
+  grid-template-areas:
+    "scoreT1 scoreM scoreT2"
+    "scoreT1 question scoreT2"
+    "scoreT1 main scoreT2"
+    "scoreT1 host scoreT2";
+  grid-template-columns: 150px 1fr 150px;
+  grid-template-rows: auto auto 1fr auto;
   justify-self: center;
   align-self: center;
   box-sizing: border-box;
   position: relative;
-  font-family: helvetica, sans-serif;
-  color: white;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 1);
-  border: 5px solid #003c7b;
+  border: 8px solid #2d2d2d;
   text-align: center;
-  border-radius: 50%;
-  background: url('../img/background.svg') #0C4779;
-  background-repeat: repeat;
-  background-position: center center;
-  -webkit-box-shadow: 0 1px 24px 1px rgba(0, 0, 0, 0.48);
-  -moz-box-shadow: 0 1px 24px 1px rgba(0, 0, 0, 0.48);
-  box-shadow: 0 1px 24px 1px rgba(0, 0, 0, 0.48);
+  background: #10141d;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), inset 0 0 30px rgba(255, 170, 0, 0.15);
 }
+
 .gameBoard .score {
   text-align: center;
   margin: auto;
-  font-size: 35px;
-  width: 75px;
-  padding: 15px 10px;
-  border: 2px solid white;
-  -webkit-box-shadow: inset 0 1px 24px 1px rgba(0, 0, 0, 0.48);
-  -moz-box-shadow: inset 0 1px 24px 1px rgba(0, 0, 0, 0.48);
-  box-shadow: inset 0 1px 24px 1px rgba(0, 0, 0, 0.48);
+  font-size: 38px;
+  width: 90px;
+  padding: 20px 10px;
+  border: 4px solid #111;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5), 0 6px 14px rgba(0, 0, 0, 0.5);
+  color: #fff;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
 }
+
 .gameBoard #boardScore {
   grid-area: scoreM;
+  background: linear-gradient(180deg, #f7c16b 0%, #f3a43c 100%);
+  border-radius: 18px;
+  color: #1c1c1c;
+  text-shadow: none;
 }
+
 .gameBoard #team1 {
   grid-area: scoreT1;
+  background: linear-gradient(180deg, #db5a46 0%, #b3312f 100%);
+  border-radius: 18px;
 }
+
 .gameBoard #team2 {
   grid-area: scoreT2;
+  background: linear-gradient(180deg, #3b8dd3 0%, #1f5f9e 100%);
+  border-radius: 18px;
 }
+
 .gameBoard #middleBoard{
   grid-area: main;
-  width: 70vw;
+  width: 100%;
   margin: auto;
 }
+
 .gameBoard #host{
   grid-area: host;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .gameBoard .questionHolder {
   display: flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  padding: 10px;
+  padding: 12px 16px;
   margin: auto;
   height: 90px;
   text-align: center;
-  font-size: 25px;
-  color: #003c7b;
-  text-shadow: initial;
-  text-align: center;
-  border: 1px solid black;
-  background: #deeeff;
-  border: 1px solid black;
-  -webkit-box-shadow: inset 0 1px 24px 1px rgba(0, 0, 0, 0.48);
-  -moz-box-shadow: inset 0 1px 24px 1px rgba(0, 0, 0, 0.48);
-  box-shadow: inset 0 1px 24px 1px rgba(0, 0, 0, 0.48);
+  font-size: 26px;
+  color: #1c1c1c;
+  text-shadow: none;
+  background: linear-gradient(180deg, #f7c16b 0%, #f3a43c 100%);
+  border: 4px solid #b25917;
+  box-shadow: inset 0 4px 12px rgba(255, 255, 255, 0.35), inset 0 -6px 18px rgba(0, 0, 0, 0.4), 0 8px 18px rgba(0, 0, 0, 0.4);
 }
+
 .gameBoard .questionHolder span {
   display: inline-block;
   vertical-align: middle;
   line-height: normal;
 }
+
 .gameBoard .colHolder {
-  background: black;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto auto auto auto;
-  gap: 5px;
-  padding: 5px;
-  grid-auto-flow: column;
+  background: linear-gradient(180deg, #f3a64b 0%, #f08c1f 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: 5px solid #d47111;
+  box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.35), 0 8px 20px rgba(0, 0, 0, 0.6);
 }
+
 .gameBoard .cardHolder {
   position: relative;
   vertical-align: top;
-  height: 50px;
-  background: black;
-  border: 4px solid white;
+  height: 64px;
+  background: #0f0f10;
+  border: 4px solid #1d1d1f;
   display: block;
-  -webkit-box-shadow: 0 1px 24px 1px rgba(0, 0, 0, 0.48);
-  -moz-box-shadow: 0 1px 24px 1px rgba(0, 0, 0, 0.48);
-  box-shadow: 0 1px 24px 1px rgba(0, 0, 0, 0.48);
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.6), 0 8px 16px rgba(0, 0, 0, 0.45);
 }
+
 .gameBoard .cardHolder:not(.empty){
   cursor: pointer;
 }
+
 .gameBoard .cardHolder b {
   position: absolute;
   right: 0;
-  width: 45px;
+  width: 55px;
   text-align: center;
-  border-left: 2px solid #003c7b;
+  border-left: 2px solid #05263f;
 }
+
 .gameBoard .cardHolder span {
   margin: 10px;
 }
+
+.gameBoard .cardHolder>div,
+.gameBoard .LBG {
+  background: linear-gradient(180deg, #155b86 0%, #0b3b5e 100%);
+}
+
+.gameBoard .cardHolder>div:empty,
+.gameBoard .score,
+.gameBoard .button,
+.gameBoard .DBG {
+  background: linear-gradient(180deg, #1e6ea0 0%, #0f4670 100%);
+}
+
 .gameBoard .cardHolder>div {
   top: -2px;
   left: -2px;
@@ -159,31 +164,35 @@ body {
   width: 100%;
   line-height: 100%;
   height: 100%;
-  border: 2px solid #003c7b;
-  line-height: 50px;
+  border: 2px solid #05263f;
+  line-height: 60px;
 }
+
 .gameBoard .cardHolder .back {
-  font-size: 25px;
+  font-size: 24px;
   text-align: left;
-  height: 50px;
-  line-height: 50px;
+  height: 60px;
+  line-height: 60px;
 }
+
 .gameBoard .cardHolder .back span {
   text-align: left;
   display: inline-block;
   vertical-align: middle;
   line-height: normal;
 }
+
 .gameBoard .cardHolder .front {
   text-align: center;
 }
+
 .gameBoard .cardHolder .front span {
-  font-size: 30px;
+  font-size: 28px;
   position: absolute;
   border-radius: 50%;
-  line-height: 35px;
-  height: 35px;
-  width: 45px;
+  line-height: 42px;
+  height: 42px;
+  width: 52px;
   left: 0;
   right: 0;
   top: 0;
@@ -192,9 +201,11 @@ body {
   margin: auto;
   border: 2px solid #003c7b;
 }
+
 .gameBoard .btnHolder{
   margin: auto;
 }
+
 .gameBoard .button{
   cursor: pointer;
   display:inline-block;
@@ -208,34 +219,39 @@ body {
   -moz-box-shadow: 0 1px 24px 1px rgba(0, 0, 0, 0.48);
   box-shadow: 0 1px 24px 1px rgba(0, 0, 0, 0.48);
 }
+
 .gameBoard .btnHolder .button#awardTeam1{
   border-radius: 50px 0 0 50px;
 }
+
 .gameBoard .btnHolder .button#awardTeam2{
   border-radius: 0 50px 50px 0;
 }
+
 .gameBoard:not(.showHost) .btnHolder .button:not(#hostBTN),
 .gameBoard:not(.showHost) .answer{
   display: none !important;
 }
+
 .showHost .cardHolder .front span{
   font-size: 20px;
 }
+
 .showHost .cardHolder .front span:nth-child(1) {
   margin: auto 5px;
 }
+
 .showHost .cardHolder .front span:nth-child(2) {
   width: 100%;
   border: none;
   margin: auto 5px;
   box-sizing: border-box;
-  padding-left: 60px; 
+  padding-left: 60px;
   text-align: left;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 1), -1px -1px 3px rgba(0, 0, 0, 1), 0 0 5px rgba(0, 0, 0, 1);
 }
 
 .wrongX:not(.button){
-  grid-area: host;
   grid-area: main;
   position: absolute;
   top: 0;
@@ -243,6 +259,7 @@ body {
   width: 100%;
   display: none;
 }
+
 .wrongX:not(.button) img{
   height: 100%;
   width: 25%;
@@ -250,6 +267,7 @@ body {
   box-sizing: border-box;
   display: inline-block;
 }
+
 .showHost #wrong img{
   height: 100%;
   width: 100%;
@@ -257,6 +275,7 @@ body {
   box-sizing: border-box;
   display: inline-block;
 }
+
 .showHost #wrong {
-width: 75px;
+  width: 75px;
 }
