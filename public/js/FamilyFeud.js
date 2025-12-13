@@ -6,13 +6,42 @@ var app = {
     socket: io.connect(),
     jsonFile: "../public/data/FamilyFeud_Questions.json",
     currentQ: 0,
-    wrong:0,
+    wrong: {
+        left: 0,
+        right: 0,
+    },
     board: $(`<div class='gameBoard'>
 
                 <!--- Scores --->
+                <div class='teamPanel leftPanel'>
+                    <div class='score' id='team1' >0</div>
+                    <div class='strikeColumn left'>
+                        <button class='strikeIndicator' type='button'>
+                            <img alt="team 1 strike" src="/public/img/Wrong.svg"/>
+                        </button>
+                        <button class='strikeIndicator' type='button'>
+                            <img alt="team 1 strike" src="/public/img/Wrong.svg"/>
+                        </button>
+                        <button class='strikeIndicator' type='button'>
+                            <img alt="team 1 strike" src="/public/img/Wrong.svg"/>
+                        </button>
+                    </div>
+                </div>
                 <div class='score' id='boardScore'>0</div>
-                <div class='score' id='team1' >0</div>
-                <div class='score' id='team2' >0</div>
+                <div class='teamPanel rightPanel'>
+                    <div class='score' id='team2' >0</div>
+                    <div class='strikeColumn right'>
+                        <button class='strikeIndicator' type='button'>
+                            <img alt="team 2 strike" src="/public/img/Wrong.svg"/>
+                        </button>
+                        <button class='strikeIndicator' type='button'>
+                            <img alt="team 2 strike" src="/public/img/Wrong.svg"/>
+                        </button>
+                        <button class='strikeIndicator' type='button'>
+                            <img alt="team 2 strike" src="/public/img/Wrong.svg"/>
+                        </button>
+                    </div>
+                </div>
 
                 <!--- Main Board --->
                 <div id='middleBoard'>
@@ -38,9 +67,12 @@ var app = {
                 <div class='btnHolder hide' id="host">
                     <div id='hostBTN'     class='button'>Be the host</div>
                     <div id='awardTeam1'  class='button' data-team='1'>Award Team 1</div>
+                    <div id="wrongLeft"  class='button wrongX'>
+                        <img alt="wrong left" src="/public/img/Wrong.svg"/>
+                    </div>
                     <div id='newQuestion' class='button'>New Question</div>
-                    <div id="wrong"       class='button wrongX'>
-                        <img alt="not on board" src="/public/img/Wrong.svg"/>
+                    <div id="wrongRight" class='button wrongX'>
+                        <img alt="wrong right" src="/public/img/Wrong.svg"/>
                     </div>
                     <div id='awardTeam2'  class='button' data-team='2' >Award Team 2</div>
                 </div>
@@ -84,10 +116,10 @@ var app = {
         question.html(qText.replace(/&x22;/gi, '"'));
         holderMain.empty();
 
-        app.wrong = 0;
-        var wrong = app.board.find(".wrongBoard")
-        $(wrong).find("img").hide()
-        $(wrong).hide()
+        app.wrong.left = 0;
+        app.wrong.right = 0;
+        app.updateStrikeIndicators("left");
+        app.updateStrikeIndicators("right");
 
         for (var i = 0; i < qNum; i++) {
             var aLI;
@@ -158,6 +190,19 @@ var app = {
             ease: Power3.easeOut
         });
     },
+    updateStrikeIndicators: (side) => {
+        var strikeColumn = app.board.find('.strikeColumn.' + side);
+        var activeCount = app.wrong[side];
+        strikeColumn.find('.strikeIndicator').each(function (index) {
+            $(this).toggleClass('active', index < activeCount);
+        });
+    },
+    recordStrike: (side) => {
+        if (app.wrong[side] < 3) {
+            app.wrong[side]++;
+            app.updateStrikeIndicators(side);
+        }
+    },
     awardPoints: (num) => {
         var boardScore = app.board.find('#boardScore');
         var currentScore = {
@@ -210,16 +255,9 @@ var app = {
         $(card).data("flipped", flipped);
         app.getBoardScore()
     },
-    wrongAnswer:()=>{
-        app.wrong++
-        console.log("wrong: "+ app.wrong )
-        var wrong = app.board.find(".wrongBoard")
-        $(wrong).find("img:nth-child("+app.wrong+")").show()
-        $(wrong).show()
-        setTimeout(() => { 
-            $(wrong).hide(); 
-        }, 1000); 
-
+    wrongAnswer:(side)=>{
+        var strikeSide = side || "left";
+        app.recordStrike(strikeSide);
     },
 
     // Socket Test
@@ -244,8 +282,11 @@ var app = {
             case "hostAssigned":
                 app.board.find('#hostBTN').remove();
                 break;
-            case "wrong":
-                app.wrongAnswer()
+            case "wrongLeft":
+                app.wrongAnswer("left")
+                break;
+            case "wrongRight":
+                app.wrongAnswer("right")
                 break;
         }
     },
@@ -259,7 +300,8 @@ var app = {
         app.board.find('#awardTeam1' ).on('click', { trigger: 'awardTeam1' }, app.talkSocket);
         app.board.find('#awardTeam2' ).on('click', { trigger: 'awardTeam2' }, app.talkSocket);
         app.board.find('#newQuestion').on('click', { trigger: 'newQuestion'}, app.talkSocket);
-        app.board.find('#wrong'      ).on('click', { trigger: 'wrong'      }, app.talkSocket);
+        app.board.find('#wrongLeft'  ).on('click', { trigger: 'wrongLeft'  }, app.talkSocket);
+        app.board.find('#wrongRight' ).on('click', { trigger: 'wrongRight' }, app.talkSocket);
 
         app.socket.on('listening', app.listenSocket)
     }
