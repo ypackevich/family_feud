@@ -59,16 +59,62 @@ body {
   text-shadow: none;
 }
 
-.gameBoard #team1 {
+.gameBoard .teamPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  justify-content: flex-start;
+  padding-top: 8px;
+}
+
+.gameBoard .leftPanel {
   grid-area: scoreT1;
+}
+
+.gameBoard .rightPanel {
+  grid-area: scoreT2;
+}
+
+.gameBoard #team1 {
   background: linear-gradient(180deg, #db5a46 0%, #b3312f 100%);
   border-radius: 18px;
 }
 
 .gameBoard #team2 {
-  grid-area: scoreT2;
   background: linear-gradient(180deg, #3b8dd3 0%, #1f5f9e 100%);
   border-radius: 18px;
+}
+
+.gameBoard .strikeColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.gameBoard .strikeIndicator {
+  width: 55px;
+  height: 55px;
+  padding: 4px;
+  background: linear-gradient(180deg, #1e6ea0 0%, #0f4670 100%);
+  border: 3px solid #ffffff;
+  border-radius: 6px;
+  box-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
+  opacity: 0.35;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+
+.gameBoard .strikeIndicator.active {
+  opacity: 1;
+  transform: scale(1.02);
+}
+
+.gameBoard .strikeIndicator img {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .gameBoard #middleBoard{
@@ -268,7 +314,9 @@ body {
   display: inline-block;
 }
 
-.showHost #wrong img{
+.showHost #wrong img,
+.showHost #wrongLeft img,
+.showHost #wrongRight img{
   height: 100%;
   width: 100%;
   padding: 5px;
@@ -276,6 +324,8 @@ body {
   display: inline-block;
 }
 
-.showHost #wrong {
+.showHost #wrong,
+.showHost #wrongLeft,
+.showHost #wrongRight {
   width: 75px;
 }
