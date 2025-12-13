@@ -10,6 +10,10 @@ var app = {
         left: 0,
         right: 0,
     },
+    skipStrikeFlash: {
+        left: false,
+        right: false,
+    },
     board: $(`<div class='gameBoard'>
 
                 <!--- Scores --->
@@ -61,6 +65,10 @@ var app = {
                     <img alt="not on board" src="/public/img/Wrong.svg"/>
                     <img alt="not on board" src="/public/img/Wrong.svg"/>
                     <img alt="not on board" src="/public/img/Wrong.svg"/>
+                </div>
+
+                <div class='strikeFlash' aria-hidden="true">
+                    <img alt="strike animation" src="/public/img/Wrong.svg" />
                 </div>
 
                 <!--- Buttons --->
@@ -257,7 +265,31 @@ var app = {
     },
     wrongAnswer:(side)=>{
         var strikeSide = side || "left";
+        if (app.skipStrikeFlash[strikeSide]) {
+            app.skipStrikeFlash[strikeSide] = false;
+        } else {
+            app.showStrikeFlash();
+        }
         app.recordStrike(strikeSide);
+    },
+
+    showStrikeFlash: () => {
+        var flash = app.board.find('.strikeFlash');
+        flash.addClass('visible');
+        setTimeout(() => {
+            flash.removeClass('visible');
+        }, 1000);
+    },
+
+    handleStrikeClick: (side) => {
+        if (app.role === 'host') {
+            var trigger = side === 'left' ? 'wrongLeft' : 'wrongRight';
+            app.skipStrikeFlash[side] = true;
+            app.showStrikeFlash();
+            app.socket.emit('talking', { trigger: trigger });
+        } else {
+            app.wrongAnswer(side);
+        }
     },
 
     // Socket Test
@@ -302,6 +334,9 @@ var app = {
         app.board.find('#newQuestion').on('click', { trigger: 'newQuestion'}, app.talkSocket);
         app.board.find('#wrongLeft'  ).on('click', { trigger: 'wrongLeft'  }, app.talkSocket);
         app.board.find('#wrongRight' ).on('click', { trigger: 'wrongRight' }, app.talkSocket);
+
+        app.board.find('.strikeColumn.left .strikeIndicator').on('click', () => app.handleStrikeClick('left'));
+        app.board.find('.strikeColumn.right .strikeIndicator').on('click', () => app.handleStrikeClick('right'));
 
         app.socket.on('listening', app.listenSocket)
     }
