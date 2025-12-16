@@ -5,6 +5,17 @@ var app = {
     role: "player",
     socket: io.connect(),
     jsonFile: "../public/data/FamilyFeud_Questions.json",
+    sounds: {
+        bell: new Audio('/public/audio/bell-ding.mp3'),
+        blip: new Audio('/public/audio/blip.mp3'),
+        buzzer: new Audio('/public/audio/buzzer.mp3'),
+    },
+    playSound: (key) => {
+        var sound = app.sounds[key];
+        if (!sound) return;
+        sound.currentTime = 0;
+        sound.play().catch(() => {});
+    },
     currentQ: 0,
     wrong: {
         left: 0,
@@ -212,6 +223,7 @@ var app = {
         }
     },
     awardPoints: (num) => {
+        app.playSound('bell');
         var boardScore = app.board.find('#boardScore');
         var currentScore = {
             var: parseInt(boardScore.html())
@@ -255,6 +267,7 @@ var app = {
         var card = $('[data-id="' + n + '"]');
         var flipped = $(card).data("flipped");
         var cardRotate = (flipped) ? 0 : -180;
+        if (!flipped) app.playSound('blip');
         TweenLite.to(card, 1, {
             rotationX: cardRotate,
             ease: Back.easeOut
@@ -264,6 +277,7 @@ var app = {
         app.getBoardScore()
     },
     wrongAnswer:(side)=>{
+        app.playSound('buzzer');
         var strikeSide = side || "left";
         if (app.skipStrikeFlash[strikeSide]) {
             app.skipStrikeFlash[strikeSide] = false;
